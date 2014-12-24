@@ -7,7 +7,7 @@ window.onload=function(){
 function changeMood(vidElement){
     var videoMap={
 	rain: "rainbg.mp4",
-	coffee: "Dramatic Chipmunk-a1Y73sPHKxw.mp4"
+	coffee: "coffee.mp4"
     };
     var audioMap={
 	rain: "playa",
