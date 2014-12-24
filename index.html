@@ -16,6 +16,7 @@
     <link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
     <!-- Custom CSS -->
     <link href="css/grayscale.css" rel="stylesheet">
+    <link href="css/portfolio-item.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -223,11 +224,58 @@ function playMusic(button)
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
                 <h2 style="margin-top:-150px">Youtube Song player</h2>
-                
-                <center><form onsubmit="ytEmbed.init({'block':'youtubeDivSearch','type':'search','q':document.getElementById('ytSearchField').value,'results': 3,'order':'most_relevance'}); return false;">
+            </div>
+            <div class="container" style="margin-bottom:-100px">
+<div class="row">
+        <div class="col-sm-5" style="margin-bottom:25px">
+            <div id="imaginary_container"> 
+                <div class="input-group stylish-input-group">
+                    <div data-tip="If a video is already in playback, hit enter after typing your query to change">
+                    <input type="text" id="query" class="form-control input-lg"  placeholder="Search" >
+                    </div>
+                    <div class="input-group-addon">
+                        <button type="submit" >
+                            <span class="glyphicon glyphicon-search">
+                            </span>
+                    </div> 
+                    
+                    
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-1 " style="margin-top:-5px">
+          <label>Autoplay:</label>
+          <div class="input-group-btn" >
+            <!--span class="btn btn-default btn-lg disabled">Autoplay</span-->
+
+            <button class="btn btn-success btn-xs js-toggle-btn js-autoplay-on" data-state="true">On</button>
+            <button class="btn btn-default btn-xs js-toggle-btn js-autoplay-off" data-state="false">Off</button>
+          </div>
+        </div>
+
+
+    </div>
+
+
+        <!-- Portfolio Item Row -->
+    <div class="row">
+    <div class="col-md-6"> 
+      <div id="player"></div>
+    </div>
+    <div class="col-md-6">
+      <div id="search-container" class="search-results row"></div>
+    </div>
+  </div>
+        <!-- /.row -->
+
+</div>
+
+
+                <!-- <center><form onsubmit="ytEmbed.init({'block':'youtubeDivSearch','type':'search','q':document.getElementById('ytSearchField').value,'results': 3,'order':'most_relevance'}); return false;">
   <input  type="text" id="ytSearchField"> </input> <input type="submit" value="Search" /></center>
 </form> </br></br>
-<center><div id="youtubeDivSearch"></div></center>
+<center><div id="youtubeDivSearch"></div></center> -->
 
                 <!--p>Grayscale is a free Bootstrap 3 theme created by Start Bootstrap. It can be yours right now, simply download the template on <a href="http://startbootstrap.com/template-overviews/grayscale/">the preview page</a>. The theme is open source, and you can use it for any purpose, personal or commercial.</p>
                 <p>This theme features stock photos by <a href="http://gratisography.com/">Gratisography</a> along with a custom Google Maps skin courtesy of <a href="http://snazzymaps.com/">Snazzy Maps</a>.</p>
@@ -300,6 +348,113 @@ function playMusic(button)
     <script src="js/player-control.min.js"></script>
     <script src="js/main.js"></script>
     <script src="ytplayer.js"></script>
+
+    <script src="js/jquery.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script type="text/javascript">
+
+  var player, playerReady = false;
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+        height: '390',
+      width: '100%',
+      videoId: 'unN4DzCGYsY',
+      events: { onReady: function () {
+        playerReady = true;
+      } }
+    });
+  }
+
+  jQuery(function ($) {
+
+    var url = 'https://www.googleapis.com/youtube/v3/search';
+    var params = {
+      part: "snippet",
+      q: 'AOE 2',
+      type: "video",
+      maxResults: 12,
+      key: "AIzaSyBdf2V7kHNAptDw2LNnxviDPmF8UC6hXgo"
+    };
+    var videoParams = {
+      part: 'contentDetails,statistics',
+      id: 'voNEBqRZmBc'
+    };
+    var firstVideo = false;
+    var autoPlay = true;
+    var $searchContainer = $('#search-container');
+
+    setInterval(function () {
+      if (firstVideo && playerReady) {
+        if (player.getPlayerState() !== 1) {
+          firstVideo = $searchContainer.find('.list-item:first-child a').data('id');
+          if (autoPlay)
+            player.loadVideoById({ videoId: firstVideo });
+          else
+            player.cueVideoById({ videoId: firstVideo });
+        }
+        firstVideo = false;
+      }
+    }, 1000);
+
+    $('#query').keyup(function (e) {
+      e.preventDefault();
+      params.q = $('#query').val();
+      $.get(url, params, function (data) {
+        var items = data.items;
+        $searchContainer.html('');
+        items.forEach(function (item) {
+          $searchContainer
+              .append('<div class="list-item col-md-3 col-sm-2 col-xs-2"><a href="http://www.youtube.com/embed/' + item.id.videoId + '" data-id="' + item.id.videoId + '" class="video"><img src="' + item.snippet.thumbnails.default.url + '" class="thumb"></a><div>' + item.snippet.title + '</div></div>');
+          firstVideo = true;
+        });
+      });
+    });
+    
+    $('#query').keypress(function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      if (playerReady) {
+        var videoid = $(this).data('id');
+        player.loadVideoById({ videoId: videoid });
+      }
+    }
+    });
+    
+    $('.js-toggle-btn').click(function (e) {
+      e.preventDefault();
+      if (!$(this).data('status')) {
+        $(this)
+            .addClass('btn-success')
+            .data('status', true)
+            .siblings('.js-toggle-btn')
+            .data('status', false)
+            .addClass('btn-default')
+            .removeClass('btn-success')
+      }
+    });
+
+    $('.js-autoplay-on').click(function () {
+      autoPlay = true;
+    });
+    $('.js-autoplay-off').click(function () {
+      autoPlay = false;
+    });
+
+    $searchContainer.on('click', '.video', function (e) {
+      e.preventDefault();
+      if (playerReady) {
+        var videoid = $(this).data('id');
+        player.loadVideoById({ videoId: videoid });
+      }
+    });
+  });
+</script>
+
+
+
 </body>
 
 </html>
