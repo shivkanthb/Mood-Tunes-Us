@@ -40,51 +40,6 @@ width: 100%; /*height: 100%;*/
 background-size:cover;
 }
 </style>
-
-<script>
-
-window.onload = function()
-    {
-        //document.getElementById('toplay').addEventListener('click',playMusic,false);
-        document.getElementById('topause').addEventListener('click',pauseMusic,false);
-        
-        playa = document.getElementById('playa');
-        playc = document.getElementById('playc');
-    }
-
-
-function playMusic(button)
-    {
-        if(button.value == "pause" ) {
-            button.value = "play";
-            playa.pause();
-            //alert(button.value);
-        }
-        
-        else {
-            button.value = "pause" ;
-            playa.play();
-            //alert(button.value);
-        }
-    }
-
-    function playCoffee(button)
-    {
-        if(button.value == "pause" ) {
-            button.value = "play";
-            playc.pause();
-            //alert(button.value);
-        }
-        
-        else {
-            button.value = "pause" ;
-            playc.play();
-            //alert(button.value);
-        }
-    }
-
-
-</script>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -159,7 +114,7 @@ function playMusic(button)
                 <div class="player-container">
                     <img src="img/rainW.png" height="100px"/>
                     <span class="player-title">Rain</span>
-                    <span class="player" value="pause" onclick="playMusic(this)">&#xf04b;</span>
+                    <span class="player" value="pause" onclick="changeMood(this)" id="rain">&#xf04b;</span>
                     <input type="range" id="slider-rain" min="0" max="100">
                 </div>
             </div>
@@ -167,7 +122,7 @@ function playMusic(button)
                 <div class="player-container">
                     <img src="img/coffeeW.png" height="100px"/>
                     <span class="player-title">Coffee shop</span>
-                    <span class="player" onclick="playCoffee(this)">&#xf04b;</span>
+                    <span class="player" onclick="changeMood(this)" id="coffee">&#xf04b;</span>
                     <input type="range" id="slider-fire" min="0" max="100">
                 </div>
             </div>
