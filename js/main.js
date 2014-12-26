@@ -58,7 +58,11 @@ function changeMood(vidElement){
     source.type="video/mp4";
     source.src=videoMap[vidId];
     if(vidId==undefined)
-	document.getElementsByClassName("intro")[0].style.backgroundImage='url(img/waves.jpg)';
+    {
+        var x = Math.floor((Math.random() * 10) + 1);
+        var fname = "BB"+ x.toString();
+	document.getElementsByClassName("intro")[0].style.backgroundImage='url(img/'+fname+'.jpg)';
+    }
     else{
 	video.appendChild(source);
 	header.insertBefore(video,firstChild);
