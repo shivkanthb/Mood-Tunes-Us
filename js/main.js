@@ -4,19 +4,22 @@ var videoMap={
     rain: "rainbg.mp4",
     coffee: "coffee.mp4",
     train: "train.mp4",
-    waves: "wavesV.mp4"
+    waves: "wavesV.mp4",
+    fire: "firelog1.mp4"
 };
 var audioMap={
     rain: "playa",
     coffee: "playc",
     train: "playa",
-    waves: "playc"
+    waves: "playc",
+    fire: "playa"
 };
 window.onload=function(){
     playMap["rain"]=false;
     playMap["coffee"]=false;
     playMap["train"]=false;
     playMap["waves"]=false;
+    playMap["fire"]=false;
 }
 function changeVolume(slider){
     var audioId=slider.id.replace("slider-","");
