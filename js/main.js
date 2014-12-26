@@ -1,18 +1,29 @@
 var playMap=[];
 var stack=new Array();
+var videoMap={
+    rain: "rainbg.mp4",
+    coffee: "coffee.mp4",
+    train: "train.mp4",
+    waves: "wavesV.mp4"
+};
+var audioMap={
+    rain: "playa",
+    coffee: "playc",
+    train: "playa",
+    waves: "playc"
+};
 window.onload=function(){
     playMap["rain"]=false;
     playMap["coffee"]=false;
+    playMap["train"]=false;
+    playMap["waves"]=false;
+}
+function changeVolume(slider){
+    var audioId=slider.id.replace("slider-","");
+    var audioElement=document.getElementById(audioMap[audioId]);
+    audioElement.volume=(slider.value)/100;
 }
 function changeMood(vidElement){
-    var videoMap={
-	rain: "rainbg.mp4",
-	coffee: "coffee.mp4"
-    };
-    var audioMap={
-	rain: "playa",
-	coffee: "playc"
-    };
     var header=document.getElementsByClassName("intro")[0];
     header.style.backgroundImage="none";
     var element=document.getElementsByClassName("intro-body")[0];
@@ -28,18 +39,8 @@ function changeMood(vidElement){
 	    stack.splice(index,1);
 	playMap[vidId]=false;
 	vidId=stack[stack.length-1];
-	if(vidId!=undefined){
-	    document.getElementById(audioMap[vidId]).value="play";
-	    document.getElementById(audioMap[vidId]).play();
-	}
     }
     else{
-	for(var key in audioMap){
-	    if(audioMap.hasOwnProperty(key)){
-		document.getElementById(audioMap[key]).value="play";
-		document.getElementById(audioMap[key]).pause();
-	    }
-	}
 	document.getElementById(audioMap[vidId]).value="pause";
 	document.getElementById(audioMap[vidId]).play();
 	playMap[vidId]=true;
