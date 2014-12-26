@@ -10,9 +10,9 @@ var videoMap={
 var audioMap={
     rain: "playa",
     coffee: "playc",
-    train: "playa",
-    waves: "playc",
-    fire: "playa"
+    train: "playt",
+    waves: "playw",
+    fire: "playf"
 };
 window.onload=function(){
     playMap["rain"]=false;
